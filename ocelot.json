@@ -1,0 +1,20 @@
+{
+    "Routes": [
+      {
+        "DownstreamPathTemplate": "/jobs",
+        "DownstreamScheme": "https",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "localhandsjobs.azurewebsites.net",
+            "Port": 443
+          }
+        ],
+        "UpstreamPathTemplate": "/jobs",
+        "UpstreamHttpMethod": [ "GET", "POST" ]
+      }
+    ],
+    "GlobalConfiguration": {
+      "BaseUrl": "https://localhandsgateway.azurewebsites.net"
+    }
+  }
+  

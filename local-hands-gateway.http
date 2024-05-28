@@ -1,0 +1,6 @@
+@local_hands_gateway_HostAddress = http://localhost:5283
+
+GET {{local_hands_gateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

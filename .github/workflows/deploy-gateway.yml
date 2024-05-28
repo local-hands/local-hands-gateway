@@ -1,0 +1,35 @@
+name: Deploy API Gateway
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy-apigateway:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Build and publish API Gateway
+      run: |
+        dotnet publish -c Release -o out
+        docker build -t youracr.azurecr.io/apigateway:latest .
+        docker push youracr.azurecr.io/apigateway:latest
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy API Gateway to Azure App Service
+      run: |
+        az webapp create --resource-group yourResourceGroup --plan yourAppServicePlan --name your-api-gateway-app --deployment-container-image-name youracr.azurecr.io/apigateway:latest
+        az webapp config appsettings set --resource-group yourResourceGroup --name your-api-gateway-app --settings WEBSITES_PORT=80
